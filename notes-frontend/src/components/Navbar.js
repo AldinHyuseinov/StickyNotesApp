@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUserData } from "../utils/UserUtil";
+import { getUserData, clearUserData } from "../utils/UserUtil";
 
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,6 +12,10 @@ function Navbar() {
             setIsLoggedIn(true)
         }
     }, []);
+
+    const handleSubmit = () => {
+        clearUserData()
+    }
 
     return (
         <nav className="navbar navbar-expand-lg bg-warning-subtle">
@@ -36,7 +40,7 @@ function Navbar() {
                         </li>
                         {isLoggedIn ? (
                             <li className="nav-item">
-                                <form className="d-flex" method="post" action="/users/logout">
+                                <form className="d-flex" onSubmit={handleSubmit}>
                                     <input
                                         className="form-control me-2 text-light-emphasis"
                                         type="submit"

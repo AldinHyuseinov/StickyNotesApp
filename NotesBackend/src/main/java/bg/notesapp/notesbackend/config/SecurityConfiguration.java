@@ -3,8 +3,11 @@ package bg.notesapp.notesbackend.config;
 import bg.notesapp.notesbackend.JwtTokenFilter;
 import bg.notesapp.notesbackend.repositories.UserRepository;
 import bg.notesapp.notesbackend.services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,17 +28,20 @@ import java.util.List;
 public class SecurityConfiguration {
     private final JwtTokenFilter jwtTokenFilter;
 
-    public SecurityConfiguration(JwtTokenFilter jwtTokenFilter) {
+    public SecurityConfiguration(@Lazy JwtTokenFilter jwtTokenFilter) {
         this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests()
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated().and().cors().and().csrf().disable()
-                .exceptionHandling().and().sessionManagement()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().exceptionHandling()
+                .authenticationEntryPoint((request, response, ex) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage()))
                 .and().addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

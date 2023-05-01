@@ -2,25 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home';
-import Navbar from './pages/Navbar';
+import Navbar from './components/Navbar';
 import RegisterPage from './pages/Register';
 import LoginPage from './pages/Login';
+import { getUserData } from './utils/UserUtil';
+import MainPage from './pages/Main';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: getUserData() === null ? <Home /> : <MainPage />,
   },
   {
     path: "/auth/register",
-    element: <RegisterPage />,
+    element: getUserData() === null ? <RegisterPage /> : <Navigate to={"/"} />,
   },
   {
     path: "/auth/login",
-    element: <LoginPage />,
+    element: getUserData() === null ? <LoginPage /> : <Navigate to={"/"} />,
   },
 ]);
 
