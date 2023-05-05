@@ -19,7 +19,7 @@ function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg bg-warning-subtle">
-            <div className="container-fluid">
+            <div className="container">
                 <button
                     className="navbar-toggler"
                     type="button"

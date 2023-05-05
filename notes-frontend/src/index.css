@@ -12,6 +12,31 @@ code {
     monospace;
 }
 
-.yellow {
-  background-color: rgba(255, 193, 7, 0.2);
+.sticky-note {
+  padding: 10px;
+  width: 100%;
+  position: sticky;
+  min-width: fit-content;
+  top: 10px;
+  font-size: 30px;
+  border: 1px solid #f7f381;
+  box-shadow: 0 0 10px 2px #333333;
+}
+
+.sticky-note-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-clip: padding-box;
+  outline: 0;
+}
+
+.sticky-note-modal-footer {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
 }
