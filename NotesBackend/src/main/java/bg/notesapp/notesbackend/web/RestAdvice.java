@@ -14,4 +14,9 @@ public class RestAdvice {
     public ResponseEntity<Map<String, String>> onFormError(FormException fe) {
         return ResponseEntity.badRequest().body(fe.getFieldAndMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> onBlankNote(IllegalArgumentException iae) {
+        return ResponseEntity.badRequest().body(iae.getMessage());
+    }
 }
