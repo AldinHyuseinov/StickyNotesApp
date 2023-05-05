@@ -1,6 +1,6 @@
 package bg.notesapp.notesbackend.services;
 
-import bg.notesapp.notesbackend.models.dto.NoteDTO;
+import bg.notesapp.notesbackend.models.dto.AddNoteDTO;
 import bg.notesapp.notesbackend.models.entities.User;
 import bg.notesapp.notesbackend.repositories.NoteRepository;
 import bg.notesapp.notesbackend.repositories.UserRepository;
@@ -37,7 +37,7 @@ public class NoteServiceTest {
 
     @Test
     public void testCreatingNote() {
-        NoteDTO mockNote = new NoteDTO();
+        AddNoteDTO mockNote = new AddNoteDTO();
         mockNote.setContent("");
         mockNote.setTitle("");
 

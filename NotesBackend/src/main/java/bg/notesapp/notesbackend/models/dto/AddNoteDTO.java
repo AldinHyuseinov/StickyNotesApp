@@ -7,9 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class NoteDTO {
-    private Long id;
-
+public class AddNoteDTO {
     private String title;
 
     private String content;
