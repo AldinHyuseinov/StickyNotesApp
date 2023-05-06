@@ -1,5 +1,6 @@
 package bg.notesapp.notesbackend.models.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -15,6 +16,7 @@ import lombok.Setter;
 public class Note extends BaseEntity {
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne

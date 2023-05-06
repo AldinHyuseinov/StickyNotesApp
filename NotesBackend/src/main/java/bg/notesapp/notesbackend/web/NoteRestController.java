@@ -45,4 +45,12 @@ public class NoteRestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/change")
+    public ResponseEntity<?> changeNoteInfo(@RequestBody NoteDTO noteDTO) {
+        noteService.modifyNote(noteDTO);
+        LOGGER.info("Modified note with id: {}", noteDTO.getId());
+
+        return ResponseEntity.ok().build();
+    }
 }

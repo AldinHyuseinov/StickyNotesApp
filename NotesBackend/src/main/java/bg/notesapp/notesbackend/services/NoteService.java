@@ -45,4 +45,12 @@ public class NoteService {
     public void deleteNoteById(Long id) {
         noteRepository.deleteById(id);
     }
+
+    public void modifyNote(NoteDTO noteDTO) {
+        Note note = noteRepository.findById(noteDTO.getId()).orElse(null);
+        note.setTitle(noteDTO.getTitle());
+        note.setContent(noteDTO.getContent());
+
+        noteRepository.save(note);
+    }
 }

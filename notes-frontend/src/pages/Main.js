@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import { getUserData } from "../utils/UserUtil";
+import { clearUserData, getUserData } from "../utils/UserUtil";
 import { showIfBlankFields } from "../utils/FormUtils";
 
 function MainPage() {
     const userData = getUserData()
     const [notes, setNotes] = useState([])
     const [blankFields, setBlankFields] = useState(false)
+    const [currentNote, setCurrentNote] = useState({})
     const title = useRef()
     const content = useRef()
 
@@ -17,7 +18,14 @@ function MainPage() {
         }
 
         fetch("http://localhost:8000/api/notes/all", requestOptions)
-            .then(response => response.json())
+            .then(response => {
+
+                if (response.status === 401) {
+                    clearUserData()
+                    return
+                }
+                return response.json()
+            })
             .then(data => setNotes(data))
     }, [notes.length])
 
@@ -29,7 +37,7 @@ function MainPage() {
         }
 
         const data = {
-            title: title.current.value,
+            title: title.current.value.length <= 20 ? title.current.value : title.current.value.substring(0, 20),
             content: content.current.value
         }
 
@@ -101,15 +109,29 @@ function MainPage() {
                 </div>
             </div>
 
+            <div className="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" style={{ width: '33%' }}>
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">View your note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div classnName="offcanvas-body">
+                    <div className="sticky-note bg-warning-subtle" >
+                        <h3 className="mt-0">{currentNote.title}</h3>
+                        <p>{currentNote.content}</p>
+                    </div>
+                </div>
+            </div>
+
             <div className="row">
                 {notes.map(note => {
                     return (
                         <div className="col-lg-2 mb-3">
-                            <div className="sticky-note bg-warning-subtle">
-                                <h3 className="mt-0">{note.title}</h3>
-                                <p>{note.content.length > 30 ? note.content.substring(0, 30) + "..." : note.content}</p>
+                            <div className="sticky-note bg-warning-subtle" >
+                                <h4 className="mt-0">{note.title}</h4>
+                                <p>{note.content.length > 45 ? note.content.substring(0, 45) + "..." : note.content}</p>
                                 <div className="d-flex justify-content-end">
-                                    <button type="button" className="btn btn-sm btn-warning me-2">Change</button>
+                                    <button type="button" className="btn btn-sm btn-warning me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+                                        onClick={() => setCurrentNote(note)}>View</button>
                                     <button type="button" className="btn btn-sm btn-danger" onClick={() => handleRemove(note.id)}>Remove</button>
                                 </div>
                             </div>
