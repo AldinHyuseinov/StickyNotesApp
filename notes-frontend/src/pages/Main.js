@@ -56,6 +56,9 @@ function MainPage() {
                 setNotes([...notes, data])
                 setBlankFields(false)
             })
+
+        title.current.value = "";
+        content.current.value = "";
     }
 
     const handleRemove = (id) => {
